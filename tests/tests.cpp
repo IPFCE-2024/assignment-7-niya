@@ -10,8 +10,10 @@ extern "C" {
 
 #include <cmath>
 
+#define pi 3.14159265358979323846   // Define pi for comparison
+
 TEST_CASE("taylor_sine") {
-  const double pi = M_PI;
+  // const double pi = M_PI; removed as it is already defined
   const double precision = 0.0001;
   std::vector<std::pair<double, int>> scenarios = {
     {pi, 8},
@@ -22,24 +24,27 @@ TEST_CASE("taylor_sine") {
   };
   for (const auto &[x, n] : scenarios) {
     REQUIRE_THAT(taylor_sine(x, n), Catch::Matchers::WithinAbs(std::sin(x), precision));
+    printf("%f, %d", x, n);
   }
 }
 
 TEST_CASE("initialize", "[stack]") {
   stack s;
   initialize(&s);
-  REQUIRE(s.head == NULL);
+  REQUIRE(s.head == nullptr); // changed from NULL to nullptr
 }
-
+ 
 TEST_CASE("empty", "[stack]") {
   stack s;
   s.head = NULL;
-  REQUIRE(empty(&s));
+  int a = empty(&s);
+  REQUIRE(a);
   node n;
   n.data = 1;
   n.next = NULL;
   s.head = &n;
-  REQUIRE(!empty(&s));
+  a = !empty(&s);
+  REQUIRE(a);
 }
 
 TEST_CASE("full", "[stack]") {
@@ -58,11 +63,11 @@ TEST_CASE("push", "[stack]") {
   s.head = NULL;
   int x = 1;
   push(x, &s);
-  REQUIRE(s.head != NULL);
+  REQUIRE(s.head != nullptr); // changed from NULL to nullptr
   REQUIRE(s.head->data == x);
   int y = 2;
   push(y, &s);
-  REQUIRE(s.head->next != NULL);
+  REQUIRE(s.head->next != nullptr); // changed from NULL to nullptr
   REQUIRE(s.head->data == y);
 }
 
@@ -75,8 +80,9 @@ TEST_CASE("pop", "[stack]") {
   n->next = s.head;
   s.head = n;
   int y = pop(&s);
-  REQUIRE(x == y);
-  REQUIRE(s.head == NULL);
+  int a = (x == y);
+  REQUIRE(a);
+  REQUIRE(s.head == nullptr); // changed from NULL to nullptr
 }
 
 TEST_CASE("stack", "[stack]") {
